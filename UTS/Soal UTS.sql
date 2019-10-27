@@ -1,4 +1,5 @@
-USE MovieRental;
+USE MovieRental
+GO
 
 -- Soal 1
 
@@ -9,7 +10,7 @@ FROM Sales.Customer AS C;
 
 SELECT *
 FROM Mv.Film AS a, Mv.Film AS b
-WHERE a.Title = b.Title
+WHERE a.Title = b.Title;
 
 -- Soal 3
 
@@ -40,7 +41,7 @@ SELECT TOP(1)
 FROM Sales.Rental AS r
 WHERE  r.CustomerID IN (SELECT c.ID
 FROM Sales.Customer AS c)
-ORDER BY Rental_Date DESC
+ORDER BY Rental_Date DESC;
 
 -- Soal 8
 
@@ -48,28 +49,28 @@ CREATE VIEW Sales.Soal8UTS
 AS
     SELECT SUM(r.Amount / i.Stock) AS Sum_Amount_Stock, AVG(i.Stock) AS Avg_Stock, COUNT(r.Amount) AS Count_Amount, MIN(r.Amount) AS Min_Amount, MAX(r.Amount) AS Max_Amount
     FROM Sales.Rental AS r
-        INNER JOIN Sales.Inventory AS i ON r.InventoryID = i.ID
+        INNER JOIN Sales.Inventory AS i ON r.InventoryID = i.ID;
 
 SELECT *
-FROM Sales.Soal8UTS
+FROM Sales.Soal8UTS;
 
 -- Soal 9
 
 SELECT COUNT(r.Amount) AS Amount, r.Rental_Date
 FROM Sales.Rental AS r
-GROUP BY r.Rental_Date
+GROUP BY r.Rental_Date;
 
 -- Soal 10
 
 SELECT COUNT(r.Amount) AS Amount, r.Rental_Date AS tanggal_mulai
 FROM Sales.Rental AS r
 WHERE r.Rental_Date >= '2019-05-01'
-GROUP BY r.Rental_Date
+GROUP BY r.Rental_Date;
 
 SELECT COUNT(r.Amount) AS Amount, r.Rental_Date AS tanggal_mulai
 FROM Sales.Rental AS r
 GROUP BY r.Rental_Date
-HAVING r.Rental_Date >= '2019-05-01'
+HAVING r.Rental_Date >= '2019-05-01';
 
 -- Soal 11
 
@@ -79,7 +80,7 @@ FROM (
     FROM Sales.Rental AS r INNER JOIN Sales.Inventory AS i ON r.InventoryID = i.ID
     WHERE YEAR(Rental_Date) >= 2019
     GROUP BY r.Amount, i.Stock, r.Rental_Date
-) AS p
+) AS p;
 
 -- Soal 12
 
@@ -91,11 +92,11 @@ WITH
         FROM Sales.Rental AS r INNER JOIN Sales.Inventory AS i ON r.InventoryID = i.ID
         WHERE YEAR(Rental_Date) >= 2019
         GROUP BY r.Amount, i.Stock, r.Rental_Date
-    )
+    );
 
 SELECT TotalAbalAbal, Amount, Rental_Date, Stock
 FROM UTS12_CTE
-WHERE MONTH(Rental_Date) = 10
+WHERE MONTH(Rental_Date) = 10;
 
 -- Soal 13
 
@@ -104,7 +105,7 @@ WHERE MONTH(Rental_Date) = 10
 EXCEPT
     SELECT MainActorID
     FROM Mv.Film
-    WHERE Release_Year = 2019
+    WHERE Release_Year = 2019;
 
 -- Soal 14
 
@@ -113,19 +114,13 @@ AFTER INSERT
 AS
     PRINT 'TRIGGER trgPrintDateAfterAdd dipanggil';
 
-    DECLARE @Filmid INT = (SELECT FilmID
-FROM inserted);
-    DECLARE @Stock INT = (SELECT Stock
-FROM inserted);
-
-    INSERT INTO Sales.Inventory
-VALUES
-    (@Filmid, @Stock);
-
     PRINT 'Data baru ditambahkan secara otomatis ke tabel Sales.Inventory pada : ' + CAST(GETDATE() AS VARCHAR);
 GO
 
 INSERT INTO Sales.Inventory
     (FilmID,Stock)
 VALUES
-    (5, 50)
+    (9, 70);
+
+SELECT *
+FROM Sales.Inventory;

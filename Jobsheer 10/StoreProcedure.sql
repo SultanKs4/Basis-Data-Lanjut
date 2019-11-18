@@ -4,8 +4,8 @@ AS
 SELECT TOP(10)
     c.custid, c.contactname,
     SUM(o.val) AS salesvalue
-FROM Sales.OrderValues	AS o
-    INNER JOIN Sales.Customers	AS c
+FROM Sales.OrderValues AS o
+    INNER JOIN Sales.Customers AS c
     ON c.custid	= o.custid
 GROUP BY c.custid, c.contactname
 ORDER BY salesvalue	DESC;
